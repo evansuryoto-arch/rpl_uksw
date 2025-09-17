@@ -35,7 +35,7 @@
                         <div class="bg-white p-4 rounded-lg shadow">
                             <h3 class="font-bold text-lg"><?php echo html_escape($course['name']); ?></h3>
                             <div class="text-sm text-gray-600 mt-1 mb-3">
-                                <p class="font-semibold">Capaian Pembelajaran:</p>
+                                <p class="font-semibold">Capaian Pembelajaran Mata Kuliah:</p>
                                 <?php if (!empty($course['learning_outcomes'])): ?>
                                     <ul class="list-disc list-inside space-y-1 mt-1">
                                         <?php foreach ($course['learning_outcomes'] as $lo): ?>

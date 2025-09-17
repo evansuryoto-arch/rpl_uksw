@@ -19,7 +19,18 @@
 <header class="bg-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Dashboard <?= ucfirst($user['role']) ?></h1>
+            <h1 class="text-2xl font-bold text-gray-900">
+    Dashboard 
+    <?php 
+        if ($user['role'] === 'mahasiswa') {
+            echo "Calon Mahasiswa";
+        } elseif ($user['role'] === 'asesor') {
+            echo "Penilai";
+        } else {
+            echo ucfirst($user['role']);
+        }
+    ?>
+</h1>
             <p class="text-gray-600">Selamat datang, <?= $user['name'] ?>! (<?= $prodi->name ?? 'Prodi tidak ditemukan' ?>)</p>
         </div>
         <a href="<?= site_url('auth/logout') ?>" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">Keluar</a>

@@ -5,7 +5,7 @@
     <!-- Header Dashboard -->
     <!-- <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Dashboard Asesor</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Dashboard Penilai</h1>
             <p class="text-gray-600">Selamat datang, <?php echo html_escape($user['name']); ?>! (<?php echo html_escape($prodi->name); ?>)</p>
         </div>
         <a href="<?php echo site_url('auth/logout'); ?>" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">Keluar</a>
@@ -25,33 +25,49 @@
             <table class="w-full text-sm text-left">
                 <thead class="bg-gray-50 text-gray-700 uppercase text-xs">
                     <tr>
-                        <th class="p-3">Mahasiswa</th>
+                        <th class="p-3">Calon Mahasiswa</th>
                         <th class="p-3">Mata Kuliah</th>
                         <th class="p-3 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <?php if (!empty($tasks)): ?>
-                        <?php foreach ($tasks as $task): ?>
-                            <tr class="hover:bg-gray-50">
-                                <td class="p-3 font-medium"><?php echo html_escape($task['student_name']); ?></td>
-                                <td class="p-3"><?php echo html_escape($task['course_name']); ?></td>
-                                <td class="p-3 text-right">
-                                   <button 
-                                        data-action="assess-rpl"
-                                        data-task='<?php echo json_encode($task); ?>'
-                                        class="bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-indigo-700">
-                                        Beri Penilaian
-                                    </button>
-                                </td>
-                            </tr>
+                    <?php if (!empty($groupedTasks)): ?>
+                        <?php foreach ($groupedTasks as $studentName => $studentTasks): ?>
+                            <?php $rowspan = count($studentTasks); ?>
+                            <?php foreach ($studentTasks as $i => $task): ?>
+                                <tr class="hover:bg-gray-50">
+                                    <?php if ($i === 0): ?>
+                                        <!-- Nama mahasiswa hanya muncul sekali -->
+                                        <td class="p-3 font-medium align-top" rowspan="<?= $rowspan ?>">
+                                            <?php echo html_escape($studentName); ?>
+                                        </td>
+                                    <?php endif; ?>
+
+                                    <!-- Mata kuliah -->
+                                    <td class="p-3"><?php echo html_escape($task['course_name']); ?></td>
+
+                                    <!-- Tombol aksi -->
+                                    <td class="p-3 text-right">
+                                        <button 
+                                            data-action="assess-rpl"
+                                            data-task='<?php echo json_encode($task); ?>'
+                                            class="bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-indigo-700">
+                                            Beri Penilaian
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3" class="p-4 text-center text-gray-500">Tidak ada ajuan yang perlu dinilai saat ini.</td>
+                            <td colspan="3" class="p-4 text-center text-gray-500">
+                                Tidak ada ajuan yang perlu dinilai saat ini.
+                            </td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
+
+                
             </table>
         </div>
     </div>
@@ -128,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     detailsHtml += `
                         <div class="border rounded-lg p-4">
                             <p class="font-semibold text-gray-800 mb-3">
-                                <span class="text-indigo-600 font-bold">Capaian Pembelajaran ${index + 1}:</span> ${detail.lo_description}
+                                <span class="text-indigo-600 font-bold">Capaian Pembelajaran Mata Kuliah ${index + 1}:</span> ${detail.lo_description}
                             </p>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                 <div class="bg-gray-50 p-3 rounded-md">

@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="text-sm text-gray-600 mt-2">
-                                <p class="font-semibold">Capaian Pembelajaran:</p>
+                                <p class="font-semibold">Capaian Pembelajaran Mata Kuliah:</p>
                                  <?php if (!empty($course['learning_outcomes'])): ?>
                                     <ul class="list-disc list-inside space-y-1 mt-1">
                                         <?php foreach ($course['learning_outcomes'] as $lo): ?>
@@ -75,30 +75,37 @@
                          </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-200">
-                         <?php if (!empty($applications)): ?>
-                             <?php foreach ($applications as $app): ?>
-                                 <tr class="hover:bg-gray-50">
-                                     <td class="p-3 font-medium"><?php echo html_escape($app['student_name']); ?></td>
-                                     <td class="p-3"><?php echo html_escape($app['course_name']); ?></td>
-                                     <td class="p-3">
-                                         <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $app['status'])); ?>">
-                                             <?php echo html_escape($app['status']); ?>
-                                         </span>
-                                     </td>
-                                     <td class="p-3 text-right">
-                                        <button 
-                                            data-action="view-details"
-                                            data-application='<?php echo json_encode($app); ?>'
-                                            class="text-indigo-600 hover:text-indigo-900 font-medium">
-                                            Lihat Detail
-                                        </button>
-                                     </td>
-                                 </tr>
-                             <?php endforeach; ?>
-                         <?php else: ?>
-                             <tr><td colspan="4" class="p-4 text-center text-gray-500">Belum ada ajuan di prodi ini.</td></tr>
-                         <?php endif; ?>
-                      </tbody>
+                        <?php if (!empty($applications)): ?>
+                            <?php foreach ($applications as $student_name => $apps): ?>
+                                <tr class="bg-gray-100">
+                                    <td class="p-3 font-bold" colspan="4">
+                                        <?php echo html_escape($student_name); ?>
+                                    </td>
+                                </tr>
+                                <?php foreach ($apps as $app): ?>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="p-3"></td> <!-- kosong supaya rapih -->
+                                        <td class="p-3"><?php echo html_escape($app['course_name']); ?></td>
+                                        <td class="p-3">
+                                            <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $app['status'])); ?>">
+                                                <?php echo html_escape($app['status']); ?>
+                                            </span>
+                                        </td>
+                                        <td class="p-3 text-right">
+                                            <button 
+                                                data-action="view-details"
+                                                data-application='<?php echo json_encode($app); ?>'
+                                                class="text-indigo-600 hover:text-indigo-900 font-medium">
+                                                Lihat Detail
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="4" class="p-4 text-center text-gray-500">Belum ada ajuan di prodi ini.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
                    </table>
                 </div>
             </div>

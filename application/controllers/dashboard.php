@@ -24,16 +24,23 @@ class Dashboard extends CI_Controller {
         // == PERBAIKAN DI SINI ==
         // Ambil semua data sesi dan masukkan ke dalam variabel 'user' untuk dikirim ke view.
         $data['user'] = $this->session->userdata(); 
-        
         $data['prodi'] = $this->rpl->get_prodi_by_id($prodi_id);
         
-        // Baris ini tidak lagi diperlukan karena datanya sudah ada di dalam $data['user']
+        // 1 Baris di bawah ini tidak lagi diperlukan karena datanya sudah ada di dalam $data['user']
         // $data['user_name'] = $this->session->userdata('name');
 
         switch ($role) {
             case 'admin':
                 $data['courses'] = $this->rpl->get_courses_by_prodi($prodi_id);
-                $data['applications'] = $this->rpl->get_applications_by_prodi($prodi_id);
+                $applications = $this->rpl->get_applications_by_prodi($prodi_id);
+
+                // Grouping berdasarkan student_name
+                $groupedApplications = [];
+                foreach ($applications as $app) {
+                    $groupedApplications[$app['student_name']][] = $app;
+                }
+
+                $data['applications'] = $groupedApplications;
                 $this->load->view('dashboard_admin', $data);
                 break;
             case 'mahasiswa':
@@ -42,7 +49,18 @@ class Dashboard extends CI_Controller {
                 $this->load->view('dashboard_mahasiswa', $data);
                 break;
             case 'asesor':
-                $data['tasks'] = $this->rpl->get_tasks_for_assessor($user_id, $prodi_id);
+                // $data['tasks'] = $this->rpl->get_tasks_for_assessor($user_id, $prodi_id);
+                // $this->load->view('dashboard_asesor', $data);
+                // break;
+                $tasks = $this->rpl->get_tasks_for_assessor($user_id, $prodi_id);
+               
+                // Grouping berdasarkan student_name
+                $groupedTasks = [];
+                foreach ($tasks as $task) {
+                    $groupedTasks[$task['student_name']][] = $task;
+                }
+
+                $data['groupedTasks'] = $groupedTasks;
                 $this->load->view('dashboard_asesor', $data);
                 break;
         }
@@ -108,10 +126,10 @@ class Dashboard extends CI_Controller {
 
     // --- FUNGSI CRUD UNTUK ADMIN ---
 
-    // GANTI FUNGSI add_course() ANDA DENGAN VERSI LENGKAP INI
+    // GANTI FUNGSI add_course() 
     public function add_course()
     {
-        if ($this->session->userdata('role') != 'admin') redirect('dashboard');
+        if ($this->session->userdata('role') != 'admin') redirect('dashboard'); //untuk ngefilter apakah username yang login admin/bukan
 
         $this->form_validation->set_rules('name', 'Nama Mata Kuliah', 'required|trim');
 
