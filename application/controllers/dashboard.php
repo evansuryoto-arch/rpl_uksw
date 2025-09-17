@@ -44,9 +44,15 @@ class Dashboard extends CI_Controller {
                 $this->load->view('dashboard_admin', $data);
                 break;
             case 'mahasiswa':
-                $data['my_applications'] = $this->rpl->get_applications_by_student($user_id);
+                // $data['my_applications'] = $this->rpl->get_applications_by_student($user_id);
+                // $data['available_courses'] = $this->rpl->get_available_courses_for_student($user_id, $prodi_id);
+                // $this->load->view('dashboard_mahasiswa', $data);
+                // break;
+                $data['my_applications'] = $this->rpl->get_applications_by_student($user_id, $prodi_id);
                 $data['available_courses'] = $this->rpl->get_available_courses_for_student($user_id, $prodi_id);
+                $this->load->view('templates/header', $data);
                 $this->load->view('dashboard_mahasiswa', $data);
+                $this->load->view('templates/footer');
                 break;
             case 'asesor':
                 // $data['tasks'] = $this->rpl->get_tasks_for_assessor($user_id, $prodi_id);

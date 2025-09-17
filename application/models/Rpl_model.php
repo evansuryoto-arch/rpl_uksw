@@ -120,11 +120,24 @@ class Rpl_model extends CI_Model {
         return $courses;
     }
 
-    public function get_applications_by_student($student_id) {
-        $this->db->select('applications.*, courses.name as course_name');
+    public function get_applications_by_student($student_id, $prodi_id) {
+        // $this->db->select('applications.*, courses.name as course_name');
+        // $this->db->from('applications');
+        // $this->db->join('courses', 'courses.id = applications.course_id');
+        // $this->db->where('applications.student_id', $student_id);
+        // return $this->db->get()->result_array();
+        
+        // $this->db->select('applications.*, courses.name as course_name, courses.description as course_description');
+        // $this->db->from('applications');
+        // $this->db->join('courses', 'applications.course_id = courses.id', 'left');
+        // $this->db->where('applications.student_id', $student_id);
+        // return $this->db->get()->result_array();
+
+        $this->db->select('applications.*, courses.name as course_name, courses.description as course_description');
         $this->db->from('applications');
-        $this->db->join('courses', 'courses.id = applications.course_id');
+        $this->db->join('courses', 'applications.course_id = courses.id', 'left');
         $this->db->where('applications.student_id', $student_id);
+        $this->db->where('courses.prodi_id', $prodi_id);
         return $this->db->get()->result_array();
     }
 
@@ -164,7 +177,8 @@ class Rpl_model extends CI_Model {
         $this->db->join('users', 'users.id = applications.student_id');
         $this->db->join('courses', 'courses.id = applications.course_id');
         $this->db->where('courses.prodi_id', $prodi_id);
-        return $this->db->get()->result_array();
+         $applications = $this->db->get()->result_array();
+        // return $this->db->get()->result_array();
 
         // INI untuk mengambil data rincian
         foreach ($applications as $key => $app) {

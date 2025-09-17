@@ -142,7 +142,7 @@
                     <input name="name" type="text" required class="w-full mt-1 p-2 border rounded-md">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Capaian Pembelajaran</label>
+                    <label class="block text-sm font-medium mb-1">Capaian Pembelajaran Mata Kuliah</label>
                     <div id="learning-outcomes-container" class="space-y-2">
                         <!-- Akan diisi oleh JS -->
                     </div>
@@ -159,6 +159,7 @@
             </div>
         </form>
     </div>
+    
 </div>
 
 
@@ -188,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         detailsHtml += `
                             <div class="border rounded-lg p-4">
                                 <p class="font-semibold text-gray-800 mb-3">
-                                    <span class="text-indigo-600 font-bold">Capaian Pembelajaran ${index + 1}:</span> ${detail.lo_description}
+                                    <span class="text-indigo-600 font-bold">Capaian Pembelajaran Mata Kuliah ${index + 1}:</span> ${detail.lo_description}
                                 </p>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                     <div class="bg-gray-50 p-3 rounded-md">

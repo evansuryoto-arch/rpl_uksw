@@ -51,8 +51,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/userguide3/database/
  */
-class CI_DB_mysqli_driver extends CI_DB {
 
+#[\AllowDynamicProperties]
+class CI_DB_mysqli_driver extends CI_DB {
+	public $failover;
 	/**
 	 * Database driver
 	 *

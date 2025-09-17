@@ -11,7 +11,8 @@
 <body class="bg-gray-100">
     <div class="flex items-center justify-center min-h-screen">
         <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-            <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Registrasi Calon Mahasiswa Mahasiswa</h1>
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Registrasi</h1>
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Calon Mahasiswa</h1>
             <p class="text-center text-gray-500 mb-6">Buat akun baru Anda</p>
             
             <?= validation_errors('<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert"><p>', '</p></div>'); ?>

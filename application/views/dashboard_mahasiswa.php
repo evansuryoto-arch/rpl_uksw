@@ -1,15 +1,8 @@
-<?php $this->load->view('templates/header'); ?>
+
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <!-- Header Dashboard -->
-    <!-- <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Dashboard Mahasiswa</h1>
-            <p class="text-gray-600">Selamat datang, <?php echo html_escape($user['name']); ?>! (<?php echo html_escape($prodi->name); ?>)</p>
-        </div>
-        <a href="<?php echo site_url('auth/logout'); ?>" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">Keluar</a>
-    </div> -->
+   
 
     <!-- Notifikasi Flash Message -->
     <?php if ($this->session->flashdata('success')): ?>
@@ -50,6 +43,7 @@
                                 data-action="apply-rpl" 
                                 data-course-id="<?php echo $course['id']; ?>"
                                 data-course-name="<?php echo html_escape($course['name']); ?>"
+                                data-course-description="<?php echo html_escape($course['description']); ?>"
                                 data-learning-outcomes='<?php echo json_encode($course['learning_outcomes']); ?>'
                                 class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
                                 Ajukan RPL
@@ -135,11 +129,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const courseId = button.dataset.courseId;
             const courseName = button.dataset.courseName;
             const learningOutcomes = JSON.parse(button.dataset.learningOutcomes);
+            const courseDescription = button.dataset.courseDescription;
 
             modalTitle.textContent = `Formulir Ajuan RPL: ${courseName}`;
             
             let formContent = `<form id="rpl-form" action="<?php echo site_url('dashboard/apply_rpl'); ?>" method="post">`;
             formContent += `<input type="hidden" name="course_id" value="${courseId}">`;
+
+            if (courseDescription) {
+                formContent += `
+                    <div class="mb-4 p-3 bg-blue-50 border rounded">
+                        <h3 class="text-sm font-semibold text-gray-700">Deskripsi Mata Kuliah</h3>
+                        <p class="text-gray-600 mt-1">${courseDescription}</p>
+                    </div>
+                `;
+            }
             
             if (learningOutcomes && learningOutcomes.length > 0) {
                 formContent += '<div class="space-y-8">';
@@ -149,6 +153,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p class="font-semibold text-gray-800 mb-3">
                                 <span class="text-indigo-600 font-bold">Capaian Pembelajaran ${index + 1}:</span> ${lo.description}
                             </p>
+
+                       
+
                             
                             <!-- Tingkat Penguasaan Diri -->
                             <div class="mb-4">
