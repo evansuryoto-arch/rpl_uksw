@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     formContent += `
                         <div class="border rounded-lg p-4 bg-gray-50">
                             <p class="font-semibold text-gray-800 mb-3">
-                                <span class="text-indigo-600 font-bold">Capaian Pembelajaran ${index + 1}:</span> ${lo.description}
+                                <span class="text-indigo-600 font-bold">CPMK ${index + 1}:</span> ${lo.description}
                             </p>
 
                        

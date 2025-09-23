@@ -26,35 +26,46 @@
                         <button data-action="add-course" class="bg-indigo-600 text-white font-semibold py-2 px-3 text-sm rounded-lg hover:bg-indigo-700">Tambah</button>
                     </div>
                 </div>
-                <div id="courses-container" class="space-y-4 p-4">
-                     <?php if (!empty($courses)): ?>
-                        <?php foreach($courses as $course): ?>
-                        <div class="border p-3 rounded-md" id="course-<?php echo $course['id']; ?>">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-md pr-4"><?php echo html_escape($course['name']); ?></h3>
-                                <div class="flex-shrink-0">
-                                    <button data-action="edit-course" data-course='<?php echo json_encode($course); ?>' class="text-blue-500 hover:text-blue-700 text-sm font-medium mr-2">Edit</button>
-                                    <a href="<?php echo site_url('dashboard/delete_course/'.$course['id']); ?>" onclick="return confirm('Anda yakin ingin menghapus mata kuliah ini?')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</a>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-600 mt-2">
-                                <p class="font-semibold">Capaian Pembelajaran Mata Kuliah:</p>
-                                 <?php if (!empty($course['learning_outcomes'])): ?>
-                                    <ul class="list-disc list-inside space-y-1 mt-1">
-                                        <?php foreach ($course['learning_outcomes'] as $lo): ?>
-                                            <li><?php echo html_escape($lo['description']); ?></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                <?php else: ?>
-                                    <p class="text-gray-500 italic">Belum ada.</p>
-                                <?php endif; ?>
+                <div id="courses-container" class="space-y-2 p-4">
+    <?php if (!empty($courses)): ?>
+        <?php foreach($courses as $course): ?>
+            <div class="border rounded-md bg-white" id="course-<?php echo $course['id']; ?>">
+                
+                <button 
+                    data-action="toggle-details" 
+                    data-target="#details-<?php echo $course['id']; ?>"
+                    class="w-full flex justify-between items-center p-3 text-left">
+                    <h3 class="font-bold text-md pr-4"><?php echo html_escape($course['name']); ?></h3>
+                    <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+
+                <div id="details-<?php echo $course['id']; ?>" class="hidden px-3 pb-3">
+                    <div class="text-sm text-gray-600 border-t pt-3 mt-2">
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="font-semibold">Capaian Pembelajaran:</p>
+                            <div class="flex-shrink-0">
+                                <button data-action="edit-course" data-course='<?php echo json_encode($course); ?>' class="text-blue-500 hover:text-blue-700 text-sm font-medium mr-2">Edit</button>
+                                <a href="<?php echo site_url('dashboard/delete_course/'.$course['id']); ?>" onclick="return confirm('Anda yakin?')" class="text-red-500 hover:text-red-700 text-sm font-medium">Hapus</a>
                             </div>
                         </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="text-gray-500 text-center p-4">Belum ada mata kuliah.</p>
-                    <?php endif; ?>
+                        <?php if (!empty($course['learning_outcomes'])): ?>
+                            <ul class="list-disc list-inside space-y-1 mt-1">
+                                <?php foreach ($course['learning_outcomes'] as $lo): ?>
+                                    <li><?php echo html_escape($lo['description']); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="text-gray-500 italic">Belum ada.</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
+
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="text-gray-500 text-center p-4">Belum ada mata kuliah.</p>
+    <?php endif; ?>
+</div>
             </div>
         </div>
 
@@ -146,10 +157,10 @@
                     <div id="learning-outcomes-container" class="space-y-2">
                         <!-- Akan diisi oleh JS -->
                     </div>
-                    <button type="button" id="add-lo-btn" class="mt-2 text-sm text-indigo-600 hover:text-indigo-800 font-semibold">+ Tambah Capaian</button>
+                    <button type="button" id="add-lo-btn" class="mt-2 text-sm text-indigo-600 hover:text-indigo-800 font-semibold">+ Tambah Capaian Pembelajaran Mata Kuliah</button>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium">Keterangan Tambahan</label>
+                    <label class="block text-sm font-medium">Deskripsi Mata Kuliah</label>
                     <textarea name="description" class="w-full mt-1 p-2 border rounded-md" rows="3"></textarea>
                 </div>
             </div>
@@ -159,7 +170,6 @@
             </div>
         </form>
     </div>
-    
 </div>
 
 
@@ -274,6 +284,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         document.getElementById('add-lo-btn').addEventListener('click', () => addLoField());
+    }
+});
+
+// Letakkan di dalam tag <script> yang sudah ada
+document.body.addEventListener('click', function(e) {
+    // Cari apakah yang diklik adalah tombol dengan data-action="toggle-details"
+    const toggleButton = e.target.closest('[data-action="toggle-details"]');
+    
+    if (toggleButton) {
+        const targetId = toggleButton.dataset.target;
+        const detailsPanel = document.querySelector(targetId);
+        const arrowIcon = toggleButton.querySelector('svg');
+
+        if (detailsPanel) {
+            // Toggle (buka/tutup) panel detail
+            detailsPanel.classList.toggle('hidden');
+            // Putar ikon panah
+            arrowIcon.classList.toggle('rotate-180');
+        }
     }
 });
 </script>
